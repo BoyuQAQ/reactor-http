@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# 修复编码为 GBK 的文件
+find . -name "Server.h" -o -name "Server.c" -o -name "test_server.c"  | while read file; do
+    echo "修复文件: $file"
+    if file -i "$file" | grep -q "iso-8859-1"; then
+        iconv -f gbk -t utf-8 "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+    fi
+    dos2unix "$file"
+done
